@@ -1,16 +1,3 @@
-import { Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff'
-      }}
-    >
-      <Text style={{ fontSize: 24 }}>Hello World!</Text>
-    </View>
-  );
-}
+import { Slot } from "expo-router";
+import { AuthProvider } from "./src/context/AuthContext";
+export default function App() { return ( <AuthProvider> <Slot /> </AuthProvider> ); }
