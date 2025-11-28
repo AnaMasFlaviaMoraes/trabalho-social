@@ -12,9 +12,35 @@ export interface CreateUserResponse {
   email: string;
 }
 
+export interface UserItem {
+  id: number;
+  name: string;
+  email: string;
+  role?: string;
+  createdAt?: string;
+}
+
+export interface UsersResponse {
+  count: number;
+  users: UserItem[];
+}
+
+export interface GetUsersParams {
+  page?: number;
+  limit?: number;
+}
+
 export async function createUserService(
   payload: CreateUserPayload
 ): Promise<CreateUserResponse> {
   const response = await api.post<CreateUserResponse>("/users", payload);
+  return response.data;
+}
+
+export async function getUsersService(
+  params: GetUsersParams = {}
+): Promise<UsersResponse> {
+  const response = await api.get<UsersResponse>("/users", { params });
+  console.log("Usários:", response.data);
   return response.data;
 }

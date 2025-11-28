@@ -34,4 +34,18 @@ export const registerStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
+  backLink: {
+    marginTop: 16,
+    alignSelf: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+  },
+
+  backLinkText: {
+    color: "#2F80ED",
+    fontSize: 18,
+    fontWeight: "500",
+    textDecorationLine: "underline",
+  },
 });

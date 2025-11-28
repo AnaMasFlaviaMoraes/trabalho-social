@@ -1,93 +1,100 @@
 import { StyleSheet } from "react-native";
 
-export const homeStyle = StyleSheet.create({
+export const profileStyle = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 32,
     backgroundColor: "#F5DBD8",
   },
-  header: {
-    width: "100%",
+  profileCard: {
     backgroundColor: "#df93c6ff",
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    borderBottomWidth: 2,
-    borderBottomColor: "#d1c7c7",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
 
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 2 },
-
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
     elevation: 3,
-    marginBottom: 24
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
+
+  profileHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
   },
-  menuButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-  },
-  menuButtonText: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  menuOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  menuContainer: {
-    position: "absolute",
-    top: 60,
-    right: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#7a7676ff",
-    elevation: 4, // Android
-    shadowColor: "#000", // iOS
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    zIndex: 10,
-    width: "50%",
-  },
-  menuItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  menuItemText: {
-    fontSize: 16,
-  },
+
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
+    fontSize: 22,
+    fontWeight: "700",
     textAlign: "center",
+  },
+
+  userInfoBox: {
+    marginTop: 8,
+  },
+
+  userInfoLabel: {
+    fontSize: 13,
+    color: "#777",
+  },
+
+  userInfoValue: {
+    fontSize: 15,
+    color: "#333",
+    fontWeight: "500",
+  },
+
+  backButton: {
+    marginTop: 16,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  backButtonText: {
+    marginLeft: 6,
+    fontSize: 14,
+    color: "#333",
+    fontWeight: "500",
+  },
+
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  loadingText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#555",
+  },
+  userInfoText: {
+    fontSize: 16,
+    marginBottom: 4,
+    color: "#333",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+    marginTop: 8,
   },
   listContent: {
     paddingBottom: 24,
   },
   card: {
     borderWidth: 1,
-    borderColor: "#7a7676ff",
+    borderColor: "#ddd",
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
-    backgroundColor: "#fff",
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
   },
@@ -95,36 +102,16 @@ export const homeStyle = StyleSheet.create({
     fontSize: 14,
     color: "#555",
   },
-  cardImage: {
-    width: "100%",
-    height: 180,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  emptyText: {
-    textAlign: "center",
-    marginTop: 32,
-    fontSize: 16,
-    color: "#777",
-  },
   cardMeta: {
     marginTop: 8,
     fontSize: 12,
     color: "#888",
     fontStyle: "italic",
   },
-  footerLoading: {
-    paddingVertical: 16,
-  },
-  initialLoadingContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  initialLoadingText: {
+  emptyText: {
     marginTop: 8,
     fontSize: 14,
-    color: "#555",
+    color: "#777",
   },
   fab: {
     position: "absolute",
@@ -201,31 +188,5 @@ export const homeStyle = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 16,
-  },
-  cardFooter: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: 8,
-  },
-  deleteIcon: {
-    fontSize: 18,
-    color: "#c00",
-    paddingHorizontal: 8,
-  },
-  logoutOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoutText: {
-    marginTop: 8,
-    fontSize: 16,
-    color: "#fff",
   },
 });

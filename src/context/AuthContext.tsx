@@ -5,7 +5,12 @@ import React, {
   type ReactNode,
 } from "react";
 import type { User } from "../services/authService";
-import { clearAuth, getAuth, saveAuth, type AuthData } from "../utils/authStorage";
+import {
+  clearAuth,
+  getAuth,
+  saveAuth,
+  type AuthData,
+} from "../utils/authStorage";
 
 interface AuthContextProps {
   user: User | null;
@@ -19,8 +24,8 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-export const AuthContext = createContext<AuthContextProps | undefined>(
-  undefined
+export const AuthContext = createContext<AuthContextProps>(
+  {} as AuthContextProps
 );
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -28,7 +33,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Carrega dados do usuário ao abrir o app
   useEffect(() => {
     async function loadAuthData() {
       const stored = await getAuth();

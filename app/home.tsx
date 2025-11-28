@@ -1,28 +1,42 @@
+import { showMessage } from "@/src/utils/showMessage";
 import { useRouter } from "expo-router";
+import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  Image,
+  Alert,
   Platform,
-  RefreshControl,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
-import { getPostsService, Post } from "../src/services/postService";
+import { CreatePostSheet } from "../src/components/createPost";
+import { HomeHeader } from "../src/components/homeHeader";
+import { PostsList } from "../src/components/postList";
+import { useAuth } from "../src/hooks/useAuth";
+import { useCreatePost } from "../src/hooks/useCreatePost";
+import {
+  deletePostService,
+  getPostsService,
+  Post,
+} from "../src/services/postService";
 import { homeStyle as styles } from "../src/styles/homeStyle";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { user, logout } = useAuth();
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit] = useState(5); 
+  const [limit] = useState(5);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const formatDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
@@ -38,7 +52,6 @@ export default function HomeScreen() {
       if (pageToLoad === 1 && !isRefresh) {
         setLoadingInitial(true);
       }
-
       if (pageToLoad > 1) {
         setLoadingMore(true);
       }
@@ -48,7 +61,6 @@ export default function HomeScreen() {
       setCount(data.count);
 
       if (pageToLoad === 1) {
-        // primeira página ou reload
         setPosts(data.posts);
       } else {
         setPosts((prev) => [...prev, ...data.posts]);
@@ -61,9 +73,7 @@ export default function HomeScreen() {
       setPage(pageToLoad);
     } catch (error: any) {
       console.log("Erro ao carregar posts:", error?.response?.data || error);
-      if (Platform.OS === "web") {
-        window.alert("Erro ao carregar posts.");
-      }
+      showMessage("Erro ao carregar posts.");
     } finally {
       setLoadingInitial(false);
       setLoadingMore(false);
@@ -71,7 +81,38 @@ export default function HomeScreen() {
     }
   }
 
-  // Carregar primeira página
+  async function handleDeletePost(postId: number) {
+    const confirm =
+      Platform.OS === "web"
+        ? window.confirm("Tem certeza que deseja excluir este post?")
+        : await new Promise<boolean>((resolve) => {
+          Alert.alert(
+            "Excluir post",
+            "Tem certeza que deseja excluir este post?",
+            [
+              { text: "Cancelar", style: "cancel", onPress: () => resolve(false) },
+              { text: "Excluir", style: "destructive", onPress: () => resolve(true) },
+            ]
+          );
+        });
+
+    if (!confirm) return;
+
+    try {
+      setDeletingId(postId);
+      await deletePostService(postId);
+
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+      setCount((prev) => Math.max(prev - 1, 0));
+      showMessage("Post excluído com sucesso.", "success");
+
+    } catch (error: any) {
+      showMessage(`Erro ao excluir post. ${error?.response?.data}`);
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
   useEffect(() => {
     loadPosts(1);
   }, []);
@@ -87,34 +128,49 @@ export default function HomeScreen() {
     loadPosts(1, true);
   }
 
-  const renderItem = ({ item }: { item: Post }) => (
-    <View style={styles.card}>
-      {item.imageId && (
-        <Image
-          source={{ uri: item.imageId }}
-          style={styles.cardImage}
-          resizeMode="cover"
-        />
-      )}
+  function handleGoToUsers() {
+    setMenuOpen(false);
+    router.push("/users");
+  }
 
-      <Text style={styles.cardTitle}>{item.title}</Text>
+  function handleGoToProfile() {
+    setMenuOpen(false);
+    router.push("/profile");
+  }
 
-      {item.content ? (
-        <Text style={styles.cardContent}>{item.content}</Text>
-      ) : null}
+  async function handleLogout() {
+    try {
+      setLoading(true);
+      await logout();
+      setTimeout(() => {
+        router.replace("/");
+      }, 800);
+    } catch (error) {
+      console.log("Erro no logout:", error);
+      if (Platform.OS === "web") {
+        window.alert("Erro ao sair.");
+      } else {
+        Alert.alert("Erro", "Erro ao sair.");
+      }
+      setLoading(false);
+    }
+  }
 
-      <Text style={styles.cardMeta}>
-        {item.author?.name} — {formatDate(item.createdAt)}
-      </Text>
-    </View>
-  );
-
-  const renderFooter = () =>
-    loadingMore ? (
-      <View style={styles.footerLoading}>
-        <ActivityIndicator />
-      </View>
-    ) : null;
+  const {
+    sheetVisible,
+    postTitle,
+    postContent,
+    postImage,
+    creating,
+    setPostTitle,
+    setPostContent,
+    openSheet,
+    closeSheet,
+    pickImage,
+    handleCreatePost,
+  } = useCreatePost({
+    onCreated: () => loadPosts(1, true),
+  });
 
   if (loadingInitial) {
     return (
@@ -127,26 +183,49 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Posts ({count})</Text>
+      <HomeHeader
+        menuOpen={menuOpen}
+        onToggleMenu={() => setMenuOpen((prev) => !prev)}
+        onGoToUsers={handleGoToUsers}
+        onGoToProfile={handleGoToProfile}
+        onLogout={handleLogout}
+      />
 
-      {posts.length === 0 ? (
-        <Text style={styles.emptyText}>Nenhum post encontrado.</Text>
-      ) : (
-        <FlatList
-          data={posts}
-          keyExtractor={(item) => String(item.id)}
-          contentContainerStyle={styles.listContent}
-          renderItem={renderItem}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.2}
-          ListFooterComponent={renderFooter}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-            />
-          }
-        />
+      <PostsList
+        posts={posts}
+        count={count}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        onLoadMore={handleLoadMore}
+        loadingMore={loadingMore}
+        formatDate={formatDate}
+        userId={user?.id}
+        onDelete={handleDeletePost}
+        deletingId={deletingId}
+
+      />
+
+      <TouchableOpacity style={styles.fab} onPress={openSheet}>
+        <Plus />
+      </TouchableOpacity>
+
+      <CreatePostSheet
+        visible={sheetVisible}
+        onClose={closeSheet}
+        postTitle={postTitle}
+        postContent={postContent}
+        onChangeTitle={setPostTitle}
+        onChangeContent={setPostContent}
+        postImage={postImage}
+        onPickImage={pickImage}
+        onCreatePost={handleCreatePost}
+        creating={creating}
+      />
+      {loading && (
+        <View style={styles.logoutOverlay}>
+          <ActivityIndicator size="large" />
+          <Text style={styles.logoutText}>Saindo...</Text>
+        </View>
       )}
     </View>
   );

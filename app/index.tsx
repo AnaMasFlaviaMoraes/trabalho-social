@@ -1,6 +1,7 @@
+import { showMessage } from "@/src/utils/showMessage";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, Platform, Text, TextInput, TouchableOpacity, View, } from 'react-native';
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { loginService } from '../src/services/authService';
 import { loginStyles as styles } from '../src/styles/loginStyles';
 import { saveAuth } from "../src/utils/authStorage";
@@ -13,11 +14,7 @@ export default function LoginScreen() {
 
   async function handleLogin() {
     if (!email || !password) {
-      if (Platform.OS === "web") {
-        window.alert("Preencha e-mail e senha.");
-      } else {
-        Alert.alert("Atenção", "Preencha e-mail e senha.");
-      }
+      showMessage("Preencha e-mail e senha.");
       return;
     }
 
@@ -26,29 +23,17 @@ export default function LoginScreen() {
       const data = await loginService(email, password);
       console.log("Login OK:", data);
 
-      const message = "Login realizado com sucesso!";
-
       await saveAuth({
         user: data.user,
         token: data.jwt,
       });
 
-      if (Platform.OS === "web") {
-        window.alert(message);
-      } else {
-        Alert.alert("Sucesso", message);
-      }
+      showMessage("Login realizado com sucesso!", "success");
 
-      // 👉 depois do login, vai para a Home
       router.replace("/home");
     } catch (error: any) {
       console.log(error?.response?.data || error);
-      const msg = "Não foi possível fazer login.";
-      if (Platform.OS === "web") {
-        window.alert(msg);
-      } else {
-        Alert.alert("Erro", msg);
-      }
+      showMessage("Não foi possível fazer login.");
     } finally {
       setLoading(false);
     }
