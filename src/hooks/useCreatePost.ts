@@ -1,10 +1,10 @@
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Alert, Platform } from "react-native";
 import { createPostService } from "../services/postService";
+import { showMessage } from "../utils/showMessage";
 
 interface UseCreatePostParams {
-  onCreated?: () => void; 
+  onCreated?: () => void;
 }
 
 export function useCreatePost({ onCreated }: UseCreatePostParams = {}) {
@@ -37,9 +37,7 @@ export function useCreatePost({ onCreated }: UseCreatePostParams = {}) {
 
   async function handleCreatePost() {
     if (!postTitle.trim() || !postContent.trim()) {
-      Platform.OS === "web"
-        ? window.alert("Preencha título e conteúdo.")
-        : Alert.alert("Atenção", "Preencha título e conteúdo.");
+      showMessage("Preencha título e conteúdo.")
       return;
     }
 
@@ -50,9 +48,7 @@ export function useCreatePost({ onCreated }: UseCreatePostParams = {}) {
 
       await createPostService(postTitle, postContent, postImage);
 
-      Platform.OS === "web"
-        ? window.alert("Post criado!")
-        : Alert.alert("Sucesso", "Post criado!");
+      showMessage("Post criado com sucesso!");
 
       // reset campos
       setPostTitle("");
@@ -60,22 +56,18 @@ export function useCreatePost({ onCreated }: UseCreatePostParams = {}) {
       setPostImage(null);
       setSheetVisible(false);
 
-      // deixa a tela decidir o que fazer
       if (onCreated) {
         onCreated();
       }
     } catch (error: any) {
       console.log(error?.response?.data || error);
-      Platform.OS === "web"
-        ? window.alert("Erro ao criar post.")
-        : Alert.alert("Erro", "Erro ao criar post.");
+      showMessage("Erro ao criar post!")
     } finally {
       setCreating(false);
     }
   }
 
   return {
-    // estado
     sheetVisible,
     postTitle,
     postContent,

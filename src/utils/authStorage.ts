@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { User } from "../services/authService";
 
-const AUTH_KEY = "@trabalho-social:auth";
+export const AUTH_KEY = "@trabalho-social:auth";
 
 export interface AuthData {
   user: User;
-  token: string; 
+  token: string;
 }
 
 export async function saveAuth(auth: AuthData) {
