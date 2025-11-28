@@ -117,7 +117,7 @@ export const profileStyle = StyleSheet.create({
     position: "absolute",
     bottom: 30,
     right: 20,
-    backgroundColor: "#1E88E5",
+    backgroundColor: "#df93c6ff",
     width: 60,
     height: 60,
     borderRadius: 30,

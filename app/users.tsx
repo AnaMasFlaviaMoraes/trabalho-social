@@ -1,5 +1,6 @@
 import { showMessage } from "@/src/utils/showMessage";
 import { useRouter } from "expo-router";
+import { CircleChevronLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -109,6 +110,7 @@ export default function UsersScreen() {
         <Text style={styles.headerTitle}>Usuários ({count})</Text>
 
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <CircleChevronLeft />
           <Text style={styles.backButtonText}>Voltar</Text>
         </TouchableOpacity>
       </View>

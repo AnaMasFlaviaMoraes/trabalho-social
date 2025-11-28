@@ -35,17 +35,17 @@ export const registerStyles = StyleSheet.create({
     fontWeight: "600",
   },
   backLink: {
-    marginTop: 16,
-    alignSelf: "center",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 999,
+    marginTop: 36,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 32,
   },
 
   backLinkText: {
-    color: "#2F80ED",
-    fontSize: 18,
+    marginLeft: 6,
+    fontSize: 14,
+    color: "#333",
     fontWeight: "500",
-    textDecorationLine: "underline",
   },
 });

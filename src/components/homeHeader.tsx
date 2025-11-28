@@ -28,7 +28,7 @@ export function HomeHeader({
           style={styles.menuButton}
           onPress={onToggleMenu}
         >
-          <Menu color="#ffffff" />
+          <Menu />
         </TouchableOpacity>
       </View>
 

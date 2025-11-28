@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { CircleChevronLeft } from 'lucide-react-native';
+import { CircleChevronLeft, Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { CreatePostSheet } from "../src/components/createPost";
@@ -12,6 +12,7 @@ import {
   type Post,
 } from "../src/services/postService";
 import { profileStyle as styles } from "../src/styles/profileStyle";
+
 
 export default function ProfileScreen() {
   const { user, loading: authLoading } = useAuth();
@@ -146,8 +147,9 @@ export default function ProfileScreen() {
       />
 
       <TouchableOpacity style={styles.fab} onPress={openSheet}>
-        <Text style={styles.fabText}>+</Text>
+        <Plus />
       </TouchableOpacity>
+
 
       <CreatePostSheet
         visible={sheetVisible}

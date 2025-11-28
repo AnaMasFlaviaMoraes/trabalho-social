@@ -7,7 +7,7 @@ export interface CreateUserPayload {
 }
 
 export interface CreateUserResponse {
-  id: number; 
+  id: number;
   name: string;
   email: string;
 }
@@ -41,6 +41,5 @@ export async function getUsersService(
   params: GetUsersParams = {}
 ): Promise<UsersResponse> {
   const response = await api.get<UsersResponse>("/users", { params });
-  console.log("Usários:", response.data);
   return response.data;
 }

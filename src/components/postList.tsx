@@ -1,3 +1,4 @@
+import { Trash } from 'lucide-react-native';
 import React from "react";
 import {
   ActivityIndicator,
@@ -61,7 +62,7 @@ export function PostsList({
 
         <View style={styles.cardFooter}>
           <Text style={styles.cardMeta}>
-            {item.author?.name} — {formatDate(item.createdAt)}
+            {formatDate(item.createdAt)}
           </Text>
 
           {isOwner && onDelete && (
@@ -72,7 +73,7 @@ export function PostsList({
               {isDeleting ? (
                 <ActivityIndicator size="small" />
               ) : (
-                <Text style={styles.deleteIcon}>🗑️</Text>
+                <Trash />
               )}
             </TouchableOpacity>
           )}

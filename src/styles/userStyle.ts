@@ -5,34 +5,55 @@ export const usersStyles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 32,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5DBD8",
   },
   header: {
+    width: "100%",
+    backgroundColor: "#df93c6ff",
+    paddingVertical: 14,
+    paddingHorizontal: 18,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 16,
+
+    borderBottomWidth: 2,
+    borderBottomColor: "#d1c7c7",
+
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 2 },
+
+    elevation: 3,
+    marginBottom: 24
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
   },
   backButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    marginTop: 36,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 32,
   },
   backButtonText: {
-    fontSize: 16,
+    marginLeft: 6,
+    fontSize: 14,
+    color: "#333",
+    fontWeight: "500",
   },
   listContent: {
     paddingBottom: 24,
   },
   card: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#7a7676ff",
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
+    backgroundColor: "#fff",
   },
   name: {
     fontSize: 18,

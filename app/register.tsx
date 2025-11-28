@@ -1,5 +1,6 @@
 import { showMessage } from "@/src/utils/showMessage";
 import { useRouter } from "expo-router";
+import { CircleChevronLeft } from 'lucide-react-native';
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -37,8 +38,7 @@ export default function RegisterScreen() {
 
     try {
       setLoading(true);
-      const user = await createUserService(payload);
-      console.log("Usuário criado:", user);
+      await createUserService(payload);
 
       showMessage("Usuário criado com sucesso!", "success");
 
@@ -109,6 +109,7 @@ export default function RegisterScreen() {
           )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.backLink} onPress={handleGoToLogin}>
+          <CircleChevronLeft />
           <Text style={styles.backLinkText}>Voltar para o login</Text>
         </TouchableOpacity>
       </View>
